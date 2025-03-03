@@ -41,18 +41,18 @@ def unifi_data(base, path, sess):
         print(f"An error occurred while accessing the API: {e}")
 
 
+def run_unifi_api():
+    load_dotenv('secrets.env')
+    base_url = 'https://unifi.prd.powerflex.io:443'
+    credentials = {
+        "username": os.getenv('UNIFI_USERNAME'),
+        "password": os.getenv('UNIFI_PW'),
+        "remember": os.getenv('REMEMBER')
+    }
 
-load_dotenv('secrets.env')
-base_url = 'https://unifi.prd.powerflex.io:443'
-credentials = {
-    "username": os.getenv('UNIFI_USERNAME'),
-    "password": os.getenv('UNIFI_PW'),
-    "remember": os.getenv('REMEMBER')
-}
+    session = login_to_unifi(base_url, credentials)
 
-session = login_to_unifi(base_url, credentials)
-
-if session:
-    metrics = unifi_data(base_url, '/api/s/jiac21ob/stat/sta', session)
-    print(json.dumps(metrics, indent=4))
-    logout_of_unifi(base_url, '/api/logout', session)
+    if session:
+        metrics = unifi_data(base_url, '/api/s/jiac21ob/stat/sta', session)
+        print(json.dumps(metrics, indent=4))
+        logout_of_unifi(base_url, '/api/logout', session)
