@@ -2,6 +2,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 
 
 def login_to_unifi(base_url, credentials):
@@ -51,6 +52,42 @@ def pull_site_ids(site_info_dict):
     return
 
 
+def acn_acc_string(string_dict):
+    return f'{string_dict["acn"]}-{string_dict["acc"]}'
+
+
+def site_id_by_acn_acc(acn_string, site_list):
+    site = ""
+    for key in site_list.keys():
+        if acn_string in key:
+            site = site_list[key]
+    return site
+
+
+def targeted_metrics(acn_string, metrics_list, metrics_data):
+    client_metrics = []
+    for client in metrics_data:
+        client_data = {}
+        if not client["is_wired"]:
+            for metric in metrics_list:
+                client_data[metric] = client[metric]
+            client_metrics.append(client_data)
+    client_metric_dict = {"site": acn_string, "wireless_client_data": client_metrics}
+    payload_file(client_metric_dict, f'/client_metrics/{acn_string}_', 'wireless_clients_')
+    return
+
+
+def payload_file(payload, out_file_name, out_file_metric):
+    payload["date_time"] = str(datetime.now().isoformat(timespec='seconds'))
+    payload["metric"] = out_file_metric
+    file_date = payload["date_time"].replace(":", "_")
+    filename = os.getcwd() + out_file_name + out_file_metric + file_date + '.json'
+    json_object = json.dumps(payload, indent=4)
+    with open(filename, 'w') as outfile:
+        outfile.write(json_object)
+    return
+
+
 def run_unifi_api(service):
     load_dotenv('secrets.env')
     base_url = 'https://unifi.prd.powerflex.io:443'
@@ -66,7 +103,15 @@ def run_unifi_api(service):
         if service['site_id_update']:
             sites = unifi_data(base_url, '/api/self/sites', session)
             pull_site_ids(sites)
-            print(json.dumps(sites, indent=4))
+        file_name = 'unifi_site_list.json'  # Replace with your file name
+        with open(file_name, 'r') as json_file:
+            site_list = json.load(json_file)
+        if service['site_client_data']['get_client_data']:
+            acn_acc = acn_acc_string(service['site_client_data'])
+            site_id = site_id_by_acn_acc(acn_acc, site_list)
+            metrics_path = f'/api/s/{site_id}/stat/sta'
+            metrics_full = unifi_data(base_url, metrics_path, session)
+            targeted_metrics(acn_acc, service['site_client_data']['metrics'], metrics_full['data'])
 
         # metrics = unifi_data(base_url, '/api/s/jiac21ob/stat/sta', session)
         # print(json.dumps(metrics, indent=4))
