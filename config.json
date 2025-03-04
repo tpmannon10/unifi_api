@@ -2,8 +2,8 @@
   "site_id_update": "False",
   "site_client_data": {
       "get_client_data": "True",
-      "acn": "0021",
-      "acc": "03",
+      "acn": "",
+      "acc": "",
       "metrics": [
           "ap_mac",
           "oui",

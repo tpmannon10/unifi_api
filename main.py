@@ -12,10 +12,14 @@ def load_config(filename):
 
 
 if __name__ == '__main__':
-    config_files = ['config.json', 'config2.json']
+    config_file = 'config.json'
+    target_sites = ['0021-03', '0033-06']
     keep_on = True
+    service_dict = load_config(config_file)
     while keep_on:
-        for setting in config_files:
-            service_dict = load_config(setting)
+        for site in target_sites:
+            site_divide = site.split('-')
+            service_dict['site_client_data']['acn'] = site_divide[0]
+            service_dict['site_client_data']['acc'] = site_divide[1]
             run_unifi_api(service_dict)
         time.sleep(600)
