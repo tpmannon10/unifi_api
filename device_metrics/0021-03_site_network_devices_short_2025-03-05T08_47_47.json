@@ -1,0 +1,36 @@
+{
+    "device_data": [
+        {
+            "mac": "d0:21:f9:f0:40:dc",
+            "state": 0,
+            "adopted": true,
+            "disabled": false,
+            "type": "uap",
+            "model": "U6M",
+            "in_gateway_mode": false,
+            "name": "WAP-LMC"
+        },
+        {
+            "mac": "d0:21:f9:e1:ed:30",
+            "state": 1,
+            "adopted": true,
+            "disabled": false,
+            "type": "usw",
+            "model": "USL16LP",
+            "in_gateway_mode": false
+        },
+        {
+            "mac": "d0:21:f9:f0:3c:f8",
+            "state": 1,
+            "adopted": true,
+            "disabled": false,
+            "type": "uap",
+            "model": "U6M",
+            "in_gateway_mode": false,
+            "name": "WAP-Parking"
+        }
+    ],
+    "site": "0021-03",
+    "date_time": "2025-03-05T08:47:47",
+    "metric": "site_network_devices_short_"
+}
