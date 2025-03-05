@@ -146,7 +146,7 @@ def run_unifi_api(service):
         if service['site_id_update']:
             sites = unifi_data(base_url, '/api/self/sites', session)
             pull_site_ids(sites)
-        file_name = 'unifi_site_list.json'  # Replace with your file name
+        file_name = 'unifi_site_list.json'
         with open(file_name, 'r') as json_file:
             site_list = json.load(json_file)
         if service['site_device_data']['get_device_data']:
