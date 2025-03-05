@@ -1,5 +1,3 @@
-import time
-
 from unifi_api_connector import run_unifi_api
 import json
 import time
