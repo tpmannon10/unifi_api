@@ -46,5 +46,25 @@
           "wifi_tx_dropped",
           "wifi_tx_retries_percentage"
       ]
-  }
+  },
+    "site_system_log": {
+        "get_system_log": false,
+        "filter_system_log": true,
+        "filter_wireless_clients_only": true,
+        "filter_params_all": [
+            "EVT_SW_Connected",
+            "EVT_SW_Lost_Contact",
+            "EVT_AP_Connected",
+            "EVT_AP_Lost_Contact",
+            "EVT_AP_ChannelChanged",
+            "EVT_LU_Disconnected",
+            "EVT_LU_Connected",
+            "EVT_WU_Disconnected",
+            "EVT_WU_Connected"
+        ],
+        "filter_params_wireless_clients": [
+            "EVT_WU_Disconnected",
+            "EVT_WU_Connected"
+        ]
+    }
 }

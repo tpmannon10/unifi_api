@@ -97,6 +97,29 @@ def device_data_org(acn_string, full_metrics, service_dict):
     return
 
 
+def system_logs(acn_string, full_system_logs, service_dict):
+    system_logs_dict = {}
+    filtered_events = []
+    if service_dict['filter_system_log']:
+        if service_dict['filter_wireless_clients_only']:
+            filter_list = service_dict['filter_params_wireless_clients']
+            name_tag = "wireless_clients_only"
+        else:
+            filter_list = service_dict['filter_params_all']
+            name_tag = "all_device_events"
+        for event in full_system_logs['data']:
+            if event["key"] in filter_list:
+                filtered_events.append(event)
+    else:
+        for event in full_system_logs['data']:
+            filtered_events.append(event)
+        name_tag = "all_site_events"
+    system_logs_dict["site"] = acn_string
+    system_logs_dict["site_events"] = filtered_events
+    payload_file(system_logs_dict, f'/system_logs/{acn_string}_', f'syslog_{name_tag}_')
+    return
+
+
 def payload_file(payload, out_file_name, out_file_metric):
     payload["date_time"] = str(datetime.now().isoformat(timespec='seconds'))
     payload["metric"] = out_file_metric
@@ -143,6 +166,11 @@ def run_unifi_api(service):
             metrics_full = unifi_data(base_url, metrics_path, session)
             targeted_metrics(acn_acc, service['site_client_data']['metrics'], metrics_full['data'])
 
-        # metrics = unifi_data(base_url, '/api/s/jiac21ob/stat/sta', session)
-        # print(json.dumps(metrics, indent=4))
+        if service['site_system_log']['get_system_log']:
+            acn_acc = acn_acc_string(service)
+            site_id = site_id_by_acn_acc(acn_acc, site_list)
+            system_log_path = f'/api/s/{site_id}/rest/event'
+            system_logs_full = unifi_data(base_url, system_log_path, session)
+            system_logs(acn_acc, system_logs_full, service['site_system_log'])
+
         logout_of_unifi(base_url, '/api/logout', session)
