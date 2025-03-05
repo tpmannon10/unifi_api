@@ -81,6 +81,22 @@ def targeted_metrics(acn_string, metrics_list, metrics_data):
     return
 
 
+def device_data_org(acn_string, full_metrics, service_dict):
+    device_data_dict = {}
+    try:
+        device_data_dict["device_data"] = full_metrics["data"]
+    except KeyError:
+        print('Data field not found in response.')
+        device_data_dict["device_data"] = ""
+    device_data_dict["site"] = acn_string
+    if service_dict['verbose']:
+        name_tag = "verbose"
+    else:
+        name_tag = "short"
+    payload_file(device_data_dict, f'/device_metrics/{acn_string}_', f'site_network_devices_{name_tag}_')
+    return
+
+
 def payload_file(payload, out_file_name, out_file_metric):
     payload["date_time"] = str(datetime.now().isoformat(timespec='seconds'))
     payload["metric"] = out_file_metric
@@ -110,8 +126,18 @@ def run_unifi_api(service):
         file_name = 'unifi_site_list.json'  # Replace with your file name
         with open(file_name, 'r') as json_file:
             site_list = json.load(json_file)
+        if service['site_device_data']['get_device_data']:
+            acn_acc = acn_acc_string(service)
+            site_id = site_id_by_acn_acc(acn_acc, site_list)
+            if service['site_device_data']['verbose']:
+                metrics_path = f'/api/s/{site_id}/stat/device'
+            else:
+                metrics_path = f'/api/s/{site_id}/stat/device-basic'
+            device_data_full = unifi_data(base_url, metrics_path, session)
+            device_data_org(acn_acc, device_data_full, service['site_device_data'])
+
         if service['site_client_data']['get_client_data']:
-            acn_acc = acn_acc_string(service['site_client_data'])
+            acn_acc = acn_acc_string(service)
             site_id = site_id_by_acn_acc(acn_acc, site_list)
             metrics_path = f'/api/s/{site_id}/stat/sta'
             metrics_full = unifi_data(base_url, metrics_path, session)

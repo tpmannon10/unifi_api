@@ -19,7 +19,7 @@ if __name__ == '__main__':
     while keep_on:
         for site in target_sites:
             site_divide = site.split('-')
-            service_dict['site_client_data']['acn'] = site_divide[0]
-            service_dict['site_client_data']['acc'] = site_divide[1]
+            service_dict['acn'] = site_divide[0]
+            service_dict['acc'] = site_divide[1]
             run_unifi_api(service_dict)
         time.sleep(600)

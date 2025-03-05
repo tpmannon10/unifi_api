@@ -1,9 +1,13 @@
 {
-  "site_id_update": "False",
-  "site_client_data": {
-      "get_client_data": "True",
-      "acn": "",
-      "acc": "",
+    "acn": "",
+    "acc": "",
+    "site_id_update": false,
+    "site_device_data": {
+        "get_device_data": true,
+        "verbose": false
+    },
+    "site_client_data": {
+      "get_client_data": true,
       "metrics": [
           "ap_mac",
           "oui",
