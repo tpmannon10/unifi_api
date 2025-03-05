@@ -70,7 +70,11 @@ def targeted_metrics(acn_string, metrics_list, metrics_data):
         client_data = {}
         if not client["is_wired"]:
             for metric in metrics_list:
-                client_data[metric] = client[metric]
+                try:
+                    client_data[metric] = client[metric]
+                except KeyError:
+                    print(f'Metric {metric} not found in client data.')
+                    client_data[metric] = ""
             client_metrics.append(client_data)
     client_metric_dict = {"site": acn_string, "wireless_client_data": client_metrics}
     payload_file(client_metric_dict, f'/client_metrics/{acn_string}_', 'wireless_clients_')
