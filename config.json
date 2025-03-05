@@ -4,7 +4,7 @@
     "site_id_update": false,
     "site_device_data": {
         "get_device_data": true,
-        "verbose": false
+        "verbose": true
     },
     "site_client_data": {
       "get_client_data": true,
