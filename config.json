@@ -1,13 +1,13 @@
 {
     "acn": "",
     "acc": "",
-    "site_id_update": false,
+    "site_id_update": true,
     "site_device_data": {
         "get_device_data": true,
         "verbose": true
     },
     "site_client_data": {
-      "get_client_data": false,
+      "get_client_data": true,
       "metrics": [
           "ap_mac",
           "oui",
@@ -48,9 +48,9 @@
       ]
   },
     "site_system_log": {
-        "get_system_log": false,
+        "get_system_log": true,
         "filter_system_log": true,
-        "filter_wireless_clients_only": false,
+        "filter_wireless_clients_only": true,
         "filter_params_all": [
             "EVT_SW_Connected",
             "EVT_SW_Lost_Contact",
