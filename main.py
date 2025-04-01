@@ -11,8 +11,8 @@ def load_config(filename):
 
 if __name__ == '__main__':
     config_file = 'config.json'
-    target_sites = ['0021-03', '0033-06']
-    keep_on = True
+    target_sites = ['0101-08']
+    keep_on = False
     loop_again = True
     service_dict = load_config(config_file)
     while loop_again:

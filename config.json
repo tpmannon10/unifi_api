@@ -7,7 +7,7 @@
         "verbose": true
     },
     "site_client_data": {
-      "get_client_data": true,
+      "get_client_data": false,
       "metrics": [
           "ap_mac",
           "oui",
@@ -50,7 +50,7 @@
     "site_system_log": {
         "get_system_log": false,
         "filter_system_log": true,
-        "filter_wireless_clients_only": true,
+        "filter_wireless_clients_only": false,
         "filter_params_all": [
             "EVT_SW_Connected",
             "EVT_SW_Lost_Contact",
